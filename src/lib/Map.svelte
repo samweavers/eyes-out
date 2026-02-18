@@ -2,6 +2,8 @@
   import { onMount } from "svelte"
   import { browser } from "$app/environment"
   import { TriangleAlert, X } from "lucide-svelte"
+  import { reportColors } from "$lib/stores/reportColors"
+  import { reports } from "$lib/stores/reports"
 
   let mapContainer
   let map
@@ -93,6 +95,19 @@
       attribution: "© OpenStreetMap contributors",
     }).addTo(map)
 
+    $reports.forEach((report) => {
+      const color = reportColors[report.type] ?? reportColors.other
+      const icon = L.divIcon({
+        className: "report-marker",
+        html: `<div class="report-pin" style="background:${color.bg}; "></div>`,
+        iconSize: [18, 18],
+        iconAnchor: [9, 9],
+      })
+      L.marker([report.lat, report.lng], { icon })
+        .bindPopup(`<strong>${report.label}</strong>`)
+        .addTo(map)
+    })
+
     // Only ONE place marker allowed
     map.on("click", (e) => {
       const { lat, lng } = e.latlng
@@ -155,5 +170,16 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+  :global(.report-pin) {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+  }
+
+  :global(.report-marker) {
+    background: none !important;
+    border: none !important;
   }
 </style>

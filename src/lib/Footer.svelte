@@ -1,34 +1,36 @@
-<script lang="ts">
+<script>
   import { ShieldAlert, Tent, Pill, TriangleAlert } from "lucide-svelte"
+  import { reportColors } from "$lib/stores/reportColors"
+  import { reportCounts, reportTotal } from "$lib/stores/reports"
 
   const links = [
     {
       label: "Encampment",
       href: "/#encampment",
       icon: Tent,
-      style: "encampment",
-      count: 4,
+      color: reportColors.encampment,
+      type: "encampment",
     },
     {
       label: "Drug Activity",
       href: "/#drug-activity",
       icon: Pill,
-      style: "drugs",
-      count: 2,
+      color: reportColors.drugs,
+      type: "drugs",
     },
     {
       label: "Suspicious",
       href: "/#suspicious",
       icon: ShieldAlert,
-      style: "suspicious",
-      count: 9,
+      color: reportColors.suspicious,
+      type: "suspicious",
     },
     {
       label: "All Reports",
       href: "/#all-reports",
       icon: TriangleAlert,
-      style: "all",
-      count: 18,
+      color: reportColors.other,
+      type: "all",
     },
   ]
 </script>
@@ -43,14 +45,15 @@
           href={link.href}
           class="relative flex flex-col items-center justify-center gap-1 py-2 text-xs font-medium text-gray-600 hover:text-black"
         >
-          {#if link.count}
-            <span
-              class="absolute top-1 right-5 flex h-5 min-w-5 items-center justify-center rounded-full bg-black px-1 text-[10px] font-bold text-white"
-            >
-              {link.count}
-            </span>
-          {/if}
-          <svelte:component this={link.icon} size={24} />
+          <span
+            class="absolute top-1 right-5 flex h-5 w-5 items-center justify-center rounded-full text-[12px] font-bold text-white"
+            style="background: {link.color.bg};"
+          >
+            {link.type === "all"
+              ? $reportTotal
+              : ($reportCounts[link.type] ?? 0)}
+          </span>
+          <svelte:component this={link.icon} size={24} color={link.color.bg} />
           <span>{link.label}</span>
         </a>
       {/each}
