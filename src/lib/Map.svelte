@@ -69,30 +69,37 @@
       },
     )
   }
-
   onMount(async () => {
     if (!browser) return
 
     L = await import("leaflet")
     await import("leaflet/dist/leaflet.css")
 
-    map = L.map(mapContainer).setView([43.2557, -79.8711], 12)
+    // Fix marker icons lost during bundling
+    const { default: iconUrl } = await import(
+      "leaflet/dist/images/marker-icon.png"
+    )
+    const { default: iconRetinaUrl } = await import(
+      "leaflet/dist/images/marker-icon-2x.png"
+    )
+    const { default: shadowUrl } = await import(
+      "leaflet/dist/images/marker-shadow.png"
+    )
+    delete L.Icon.Default.prototype._getIconUrl
+    L.Icon.Default.mergeOptions({ iconUrl, iconRetinaUrl, shadowUrl })
 
+    map = L.map(mapContainer).setView([43.2557, -79.8711], 12)
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "© OpenStreetMap contributors",
     }).addTo(map)
 
-    // 👇 Only ONE place marker allowed
+    // Only ONE place marker allowed
     map.on("click", (e) => {
       const { lat, lng } = e.latlng
-
-      // Remove old marker
       if (placeMarker) map.removeLayer(placeMarker)
-
       placeMarker = L.marker([lat, lng]).addTo(map)
     })
 
-    // Now safe to get location
     setLocation()
 
     return () => {
