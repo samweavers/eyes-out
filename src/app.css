@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #ef476f;
+    --color-primary-muted: #fef6f8;
+    --color-secondary: #ff9f1c;
+    --color-secondary-muted: #ff9f1c15;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+html {
+  @apply text-base;
+  color: #555;
+  font-family: Figtree;
+}
+
+h1 {
+  @apply text-5xl lg:text-7xl;
+  color: #222;
+  letter-spacing: -1px;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 800;
+}
+h2,
+.h2 {
+  @apply text-3xl lg:text-4xl;
+  color: #222;
+  letter-spacing: -1px;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 700;
+  line-height: 1.3;
+}
+h3,
+.h3 {
+  @apply text-2xl;
+  color: #222;
+  letter-spacing: -1px;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+p,
+.p {
+  @apply text-lg lg:text-2xl max-w-[850px];
+}
+
+.btn {
+  @apply text-xl bg-[--color-primary];
+  /* @apply hover:px-6 transition-all; */
+}
+
+.content-block {
+  @apply grid gap-8 place-items-center py-10 w-full;
+}
+
+.gradient-text {
+  background: linear-gradient(
+    100deg,
+    #ef476f,
+    /* Your provided vibrant pinkish-red */ #ff8c42,
+    /* Bright orange */ #ffd166,
+    /* Warm golden-yellow */ #ff9f1c,
+    /* Deep yellow-orange */ #ef476f /* Return to your provided color */
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shift 8s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* all super custom styles go below here: */
+
+.hero-chip {
+  @apply border-2 px-4 py-2 rounded-full font-medium text-center max-w-[350px]
+  border-[--color-primary] text-[--color-primary] bg-[--color-primary-muted]
+  lg:text-lg lg:max-w-[600px];
+}
+
+.plan {
+  @apply grid grid-rows-[repeat(6,max-content),1fr] gap-2 border-2 py-12 px-4 rounded-xl text-lg w-full relative text-center place-items-center
+  border-gray-300;
+}
+
+.plan p {
+  @apply text-lg;
+}
+
+.plan ul li {
+  @apply text-lg text-left flex items-center;
+}
+
+.plan ul li:before {
+  @apply w-5 h-5 mr-3;
+  content: url($lib/assets/square-check-solid.svg);
+}
+
+.price {
+  @apply text-3xl font-black;
+}
+
+.most-popular {
+  @apply border-[--color-primary] bg-[--color-primary-muted];
+}
+
+.most-popular::after {
+  content: 'MOST POPULAR';
+  @apply absolute font-bold -top-3 bg-[--color-primary] rounded-lg
+    text-white px-3 py-1 text-base;
+}
+
+.mission {
+  @apply border-2 rounded-2xl p-8 font-medium max-w-[600px] text-center text-lg
+  border-[--color-secondary] bg-[--color-secondary-muted];
+}
