@@ -1,3 +1,5 @@
+/* @import 'leaflet/dist/leaflet.css'; */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -158,47 +160,227 @@ p,
   }
 }
 
-/* all super custom styles go below here: */
 
-.hero-chip {
-  @apply border-2 px-4 py-2 rounded-full font-medium text-center max-w-[350px]
-  border-[--color-primary] text-[--color-primary] bg-[--color-primary-muted]
-  lg:text-lg lg:max-w-[600px];
+body {
+  height: 100vh;
 }
 
-.plan {
-  @apply grid grid-rows-[repeat(6,max-content),1fr] gap-2 border-2 py-12 px-4 rounded-xl text-lg w-full relative text-center place-items-center
-  border-gray-300;
+input {
+  padding: 0;
+  box-shadow: none;
+  outline: none;
 }
 
-.plan p {
-  @apply text-lg;
+.input {
+  border-radius: 9999px;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  color: #222;
 }
 
-.plan ul li {
-  @apply text-lg text-left flex items-center;
+.button {
+  position: relative;
+  border-radius: 9999px;
+  border: 1px solid #0b3c91;
+  background: linear-gradient(to bottom, #1e88e5, #1565c0, #0d47a1);
+  padding: 0.5rem 2.5rem;
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: white;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.35),
+    inset 0 -4px 6px rgba(0,0,0,0.35),
+    0 6px 0 #0b3c91,
+    0 8px 14px rgba(0,0,0,0.4);
+  transition: all 150ms;
 }
 
-.plan ul li:before {
-  @apply w-5 h-5 mr-3;
-  content: url($lib/assets/square-check-solid.svg);
+.button:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.25),
+    inset 0 -2px 4px rgba(0,0,0,0.4),
+    0 3px 0 #0b3c91,
+    0 4px 8px rgba(0,0,0,0.4);
 }
 
-.price {
-  @apply text-3xl font-black;
+  .danger-button {
+      background: linear-gradient(to bottom, #e53935, #c62828, #b71c1c);
+      box-shadow:
+  inset 0 2px 0 rgba(255,255,255,0.35),
+  inset 0 -4px 6px rgba(0,0,0,0.35),
+  0 6px 0 #7f0000,
+  0 8px 14px rgba(0,0,0,0.4);
+  }
+
+  .danger-button:active {
+     box-shadow:
+  inset 0 2px 0 rgba(255,255,255,0.25),
+  inset 0 -4px 6px rgba(0,0,0,0.4),
+  0 6px 0 #7f0000,
+  0 8px 14px rgba(0,0,0,0.4);
+  }
+
+.footer-menu-item {
+  background: white;
+  padding: 0.5rem;
+  font-weight: 900;
 }
 
-.most-popular {
-  @apply border-[--color-primary] bg-[--color-primary-muted];
+.footer-menu-item.encampment {
+  position: relative;
+  border-radius: 0.5rem;
+  border: 1px solid #0b3c91;
+  background: linear-gradient(to bottom, #1e88e5, #1565c0, #0d47a1);
+  padding: 0.5rem 2.5rem;
+  font-size: 1.25rem;
+  color: white;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.35),
+    inset 0 -4px 6px rgba(0,0,0,0.35);
+  transition: all 150ms;
 }
 
-.most-popular::after {
-  content: 'MOST POPULAR';
-  @apply absolute font-bold -top-3 bg-[--color-primary] rounded-lg
-    text-white px-3 py-1 text-base;
+.footer-menu-item.encampment:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.25),
+    inset 0 -2px 4px rgba(0,0,0,0.4),
+    0 3px 0 #0b3c91,
+    0 4px 8px rgba(0,0,0,0.4);
 }
 
-.mission {
-  @apply border-2 rounded-2xl p-8 font-medium max-w-[600px] text-center text-lg
-  border-[--color-secondary] bg-[--color-secondary-muted];
+.footer-menu-item.drugs {
+  position: relative;
+  border-radius: 0.5rem;
+  border: 1px solid #2e7d32;
+  background: linear-gradient(to bottom, #43a047, #388e3c, #1b5e20);
+  padding: 0.5rem 2.5rem;
+  font-size: 1.25rem;
+  color: white;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.35),
+    inset 0 -4px 6px rgba(0,0,0,0.35);
+  transition: all 150ms;
 }
+
+.footer-menu-item.drugs:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.25),
+    inset 0 -2px 4px rgba(0,0,0,0.4),
+    0 3px 0 #2e7d32,
+    0 4px 8px rgba(0,0,0,0.4);
+}
+
+.footer-menu-item.suspicious {
+  position: relative;
+  border-radius: 0.5rem;
+  border: 1px solid #6a1b9a;
+  background: linear-gradient(to bottom, #8e24aa, #7b1fa2, #4a148c);
+  padding: 0.5rem 2.5rem;
+  font-size: 1.25rem;
+  color: white;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.35),
+    inset 0 -4px 6px rgba(0,0,0,0.35);
+  transition: all 150ms;
+}
+
+.footer-menu-item.suspicious:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.25),
+    inset 0 -2px 4px rgba(0,0,0,0.4),
+    0 3px 0 #6a1b9a,
+    0 4px 8px rgba(0,0,0,0.4);
+}
+
+.footer-menu-item.all {
+  position: relative;
+  border-radius: 0.5rem;
+  border: 1px solid #03a9f4;
+  background: linear-gradient(to bottom, #4fc3f7, #29b6f6, #0288d1);
+  padding: 0.5rem 2.5rem;
+  font-size: 1.25rem;
+  color: white;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.35),
+    inset 0 -4px 6px rgba(0,0,0,0.35);
+  transition: all 150ms;
+}
+
+.footer-menu-item.all:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.25),
+    inset 0 -2px 4px rgba(0,0,0,0.4),
+    0 3px 0 #03a9f4,
+    0 4px 8px rgba(0,0,0,0.4);
+}
+
+.top {
+  background: linear-gradient(to top, transparent, #dbeafe, #93c5fd);
+}
+
+
+  .you-marker {
+    position: relative;
+    width: 20px !important;
+    height: 20px !important;
+    border-radius: 50%;
+    background: #2b8cff;
+    border: 3px solid white;
+    box-shadow: 0 0 0 4px rgba(43, 140, 255, 0.25);
+  }
+
+  /* Pulsing ring */
+  .you-marker::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: rgba(43, 140, 255, 0.4);
+    animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    z-index: -1;
+  }
+
+  /* Optional soft glow */
+  .you-marker::before {
+    content: "";
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    background: rgba(43, 140, 255, 0.15);
+    filter: blur(4px);
+    z-index: -2;
+  }
+
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    70% {
+      transform: scale(2.5);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(2.5);
+      opacity: 0;
+    }
+  }
+
+  .icon-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+
+  .big-shadow {
+    box-shadow:
+      0 4px 6px rgba(0, 0, 0, 0.07),
+      0 10px 30px rgba(0, 0, 0, 0.13);
+  }
