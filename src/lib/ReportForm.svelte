@@ -1,4 +1,10 @@
 <script>
+  import { onMount } from "svelte"
+  import { browser } from "$app/environment"
+  import { userLocation } from "$lib/stores/location"
+
+  console.log($userLocation)
+
   let name = ""
   let email = ""
   let phone = ""
@@ -42,6 +48,36 @@
       photoPreview = null
     }, 3000)
   }
+
+  let locationMapContainer
+  let locationMap
+
+  onMount(async () => {
+    if (!browser || !$userLocation) return
+
+    const L = await import("leaflet")
+    await import("leaflet/dist/leaflet.css")
+
+    const { latitude, longitude } = $userLocation
+
+    locationMap = L.map(locationMapContainer, {
+      zoomControl: false,
+      dragging: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      boxZoom: false,
+      keyboard: false,
+      touchZoom: false,
+    }).setView([latitude, longitude], 16)
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "© OpenStreetMap contributors",
+    }).addTo(locationMap)
+
+    L.marker([latitude, longitude]).addTo(locationMap)
+
+    return () => locationMap?.remove()
+  })
 </script>
 
 <!-- Outer page bg matches the light map feel of Eyes Out -->
@@ -269,6 +305,33 @@
                 on:change={handlePhotoChange}
               />
             </label>
+          {/if}
+        </div>
+
+        <!-- Incident Location -->
+        <div class="px-5 py-5 space-y-3">
+          <p
+            class="text-xs font-semibold text-slate-400 uppercase tracking-widest"
+          >
+            Incident Location
+          </p>
+
+          {#if $userLocation}
+            <div
+              class="rounded-xl overflow-hidden border border-slate-200 h-44"
+              bind:this={locationMapContainer}
+            ></div>
+            <p class="text-xs text-slate-400">
+              {$userLocation.latitude.toFixed(5)}, {$userLocation.longitude.toFixed(
+                5,
+              )}
+            </p>
+          {:else}
+            <div
+              class="flex items-center justify-center bg-slate-50 border border-dashed border-slate-200 rounded-xl py-7 text-sm text-slate-400"
+            >
+              Location unavailable
+            </div>
           {/if}
         </div>
 

@@ -4,6 +4,7 @@
   import { TriangleAlert, X } from "lucide-svelte"
   import { reportColors } from "$lib/stores/reportColors"
   import { reports } from "$lib/stores/reports"
+  import { userLocation } from "$lib/stores/location"
 
   let mapContainer
   let map
@@ -17,6 +18,16 @@
   function removeMarker() {
     map.removeLayer(placeMarker)
     placeMarker = false
+    // Revert store to GPS position if available
+    navigator.geolocation.getCurrentPosition(
+      (pos) =>
+        userLocation.set({
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+        }),
+      () => userLocation.set(null),
+      { maximumAge: 60000 },
+    )
   }
 
   function setLocation() {
@@ -25,51 +36,36 @@
       return
     }
 
-    // First: grab a quick cached position to center map immediately
+    const updateLocation = (pos) => {
+      const { latitude, longitude } = pos.coords
+      userLocation.set({ latitude, longitude })
+      map.setView([latitude, longitude], 17)
+      if (youMarker) map.removeLayer(youMarker)
+      youMarker = L.marker([latitude, longitude], {
+        icon: L.divIcon({
+          className: "you-marker",
+          html: "",
+          iconSize: [20, 20],
+          iconAnchor: [10, 10],
+        }),
+      }).addTo(map)
+    }
+
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const { latitude, longitude } = pos.coords
-        map.setView([latitude, longitude], 17)
-        if (youMarker) map.removeLayer(youMarker)
-        youMarker = L.marker([latitude, longitude], {
-          icon: L.divIcon({
-            className: "you-marker",
-            html: "",
-            iconSize: [20, 20],
-            iconAnchor: [10, 10],
-          }),
-        }).addTo(map)
-      },
+      updateLocation,
       (err) => (error = err.message),
       {
-        enableHighAccuracy: false, // fast, uses cached/wifi/cell
+        enableHighAccuracy: false,
         timeout: 3000,
-        maximumAge: 60000, // accept a position up to 1 min old
+        maximumAge: 60000,
       },
     )
 
-    // Then: refine with high accuracy GPS in the background
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const { latitude, longitude } = pos.coords
-        map.setView([latitude, longitude], 17)
-        if (youMarker) map.removeLayer(youMarker)
-        youMarker = L.marker([latitude, longitude], {
-          icon: L.divIcon({
-            className: "you-marker",
-            html: "",
-            iconSize: [20, 20],
-            iconAnchor: [10, 10],
-          }),
-        }).addTo(map)
-      },
-      () => {}, // silently fail, we already have a rough position
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
-      },
-    )
+    navigator.geolocation.getCurrentPosition(updateLocation, () => {}, {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0,
+    })
   }
   onMount(async () => {
     if (!browser) return
@@ -113,6 +109,7 @@
       const { lat, lng } = e.latlng
       if (placeMarker) map.removeLayer(placeMarker)
       placeMarker = L.marker([lat, lng]).addTo(map)
+      userLocation.set({ latitude: lat, longitude: lng })
     })
 
     setLocation()
