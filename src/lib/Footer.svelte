@@ -26,8 +26,8 @@
       type: "suspicious",
     },
     {
-      label: "All Reports",
-      href: "/report?crime=all-reports",
+      label: "Other",
+      href: "/report?crime=other",
       icon: TriangleAlert,
       color: reportColors.other,
       type: "all",
@@ -37,9 +37,9 @@
 
 <footer class="fixed bottom-0 left-0 right-0 z-50 p-4 pt-20">
   <div
-    class="mx-auto max-w-md rounded-2xl border border-gray-200 bg-white shadow-xl big-shadow"
+    class="mx-auto max-w-md rounded-full border border-gray-200 bg-white big-shadow"
   >
-    <nav class="grid grid-cols-4">
+    <nav class="grid grid-cols-4 p-2">
       {#each links as link}
         <a
           href={link.href}

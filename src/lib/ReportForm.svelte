@@ -2,20 +2,23 @@
   import { onMount } from "svelte"
   import { browser } from "$app/environment"
   import { userLocation } from "$lib/stores/location"
+  import { crimes } from "$lib/stores/crimes"
 
   let name = ""
-  let email = ""
+  // let email = ""
   let phone = ""
   let type = ""
   let date = ""
   let time = ""
   let description = ""
-  let photo = null
-  let photoPreview = null
+  let photos = []
+  let photoPreviews = []
   let submitted = false
 
-  const params = new URLSearchParams(window.location.search)
-  type = params.get("crime") ?? ""
+  if (window) {
+    const params = new URLSearchParams(window.location.search)
+    type = params.get("crime") ?? ""
+  }
 
   // Auto-populate current date and time
   const now = new Date()
@@ -23,53 +26,72 @@
   time = now.toTimeString().slice(0, 5)
 
   const handlePhotoChange = (e) => {
-    const file = e.target.files[0]
-    if (!file) return
-    photo = file
-    const reader = new FileReader()
-    reader.onload = (ev) => (photoPreview = ev.target.result)
-    reader.readAsDataURL(file)
+    const files = Array.from(e.target.files)
+    if (!files.length) return
+
+    files.forEach((file) => {
+      photos = [...photos, file]
+      const reader = new FileReader()
+      reader.onload = (ev) =>
+        (photoPreviews = [
+          ...photoPreviews,
+          { src: ev.target.result, name: file.name },
+        ])
+      reader.readAsDataURL(file)
+    })
   }
 
-  const removePhoto = () => {
-    photo = null
-    photoPreview = null
-    const input = document.getElementById("photo")
-    if (input) input.value = ""
+  const removePhoto = (index) => {
+    photos = photos.filter((_, i) => i !== index)
+    photoPreviews = photoPreviews.filter((_, i) => i !== index)
+    if (photos.length === 0) {
+      const input = document.getElementById("photo")
+      if (input) input.value = ""
+    }
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
     const formData = {
       name,
-      email,
+      // email,
       phone,
       type,
       date,
       time,
       description,
-      photo,
+      photos,
     }
     console.log("Crime report submitted:", formData)
     submitted = true
     setTimeout(() => {
       submitted = false
       name = ""
-      email = ""
+      // email = ""
       phone = ""
       type = ""
       date = ""
       time = ""
       description = ""
-      photo = null
-      photoPreview = null
+      photos = []
+      photoPreviews = []
     }, 3000)
   }
 
   let locationMapContainer
   let locationMap
+  let typeSelect
 
   onMount(async () => {
+    if (type === "other" && typeSelect) {
+      typeSelect.focus()
+      try {
+        typeSelect.showPicker()
+      } catch (_) {
+        // showPicker() requires a user gesture in most browsers — focus is the fallback
+      }
+    }
+
     if (!browser || !$userLocation) return
 
     const L = await import("leaflet")
@@ -107,7 +129,7 @@
     >
       <div class="bg-white/10 rounded-xl p-2.5">
         <svg
-          class="w-7 h-7 text-white"
+          class="w-5 h-5 text-white"
           fill="none"
           stroke="currentColor"
           stroke-width="1.8"
@@ -125,14 +147,9 @@
           />
         </svg>
       </div>
-      <div>
-        <p class="text-white/60 text-xs font-medium tracking-widest uppercase">
-          Eyes Out
-        </p>
-        <h1 class="text-white text-xl font-bold leading-tight">
-          Report an Incident
-        </h1>
-      </div>
+      <h1 class="text-white text-xl font-bold leading-tight">
+        Report an Incident
+      </h1>
     </div>
 
     <!-- Form card -->
@@ -162,8 +179,8 @@
             />
           </div>
 
-          <div class="grid grid-cols-2 gap-3">
-            <div>
+          <div class="grid gap-3">
+            <!-- <div>
               <label
                 for="email"
                 class="block text-sm font-medium text-slate-600 mb-1"
@@ -176,7 +193,7 @@
                 placeholder="john@example.com"
                 class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-[#1b2a4a]/30 focus:border-[#1b2a4a] transition"
               />
-            </div>
+            </div> -->
             <div>
               <label
                 for="phone"
@@ -210,17 +227,17 @@
             <select
               id="type"
               bind:value={type}
+              bind:this={typeSelect}
               required
-              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1b2a4a]/30 focus:border-[#1b2a4a] transition appearance-none"
+              class="w-full bg-slate-50 border rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1b2a4a]/30 focus:border-[#1b2a4a] transition appearance-none {type ===
+              'other'
+                ? 'border-[#1b2a4a] ring-2 ring-[#1b2a4a]/30 animate-pulse'
+                : 'border-slate-200'}"
             >
               <option value="">Select...</option>
-              <option value="encampment">Encampment</option>
-              <option value="drug_activity">Drug Activity</option>
-              <option value="suspicious">Suspicious</option>
-              <option value="theft">Theft</option>
-              <option value="assault">Assault</option>
-              <option value="vandalism">Vandalism</option>
-              <option value="other">Other</option>
+              {#each crimes as crime}
+                <option value={crime.value}>{crime.label}</option>
+              {/each}
             </select>
           </div>
 
@@ -236,7 +253,7 @@
                 bind:value={date}
                 type="date"
                 required
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1b2a4a]/30 focus:border-[#1b2a4a] transition"
+                class="w-full text-center bg-slate-50 border border-slate-200 rounded-xl py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1b2a4a]/30 focus:border-[#1b2a4a] transition"
               />
             </div>
             <div>
@@ -250,7 +267,7 @@
                 bind:value={time}
                 type="time"
                 required
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1b2a4a]/30 focus:border-[#1b2a4a] transition"
+                class="w-full text-center bg-slate-50 border border-slate-200 rounded-xl py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1b2a4a]/30 focus:border-[#1b2a4a] transition"
               />
             </div>
           </div>
@@ -279,29 +296,67 @@
             Photo Evidence
           </p>
 
-          {#if photoPreview}
-            <div
-              class="relative rounded-xl overflow-hidden border border-slate-200"
-            >
-              <img
-                src={photoPreview}
-                alt="Preview"
-                class="w-full max-h-48 object-cover"
-              />
-              <button
-                type="button"
-                on:click={removePhoto}
-                class="absolute top-2 right-2 bg-black/60 hover:bg-red-500 text-white text-xs font-medium px-3 py-1 rounded-full transition"
+          <!-- Previews grid -->
+          {#if photoPreviews.length > 0}
+            <div class="grid grid-cols-3 gap-2">
+              {#each photoPreviews as preview, i}
+                <div
+                  class="relative rounded-xl overflow-hidden border border-slate-200 aspect-square"
+                >
+                  <img
+                    src={preview.src}
+                    alt="Preview {i + 1}"
+                    class="w-full h-full object-cover"
+                  />
+                  <button
+                    type="button"
+                    on:click={() => removePhoto(i)}
+                    class="absolute top-1 right-1 bg-black/60 hover:bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center transition"
+                    aria-label="Remove photo"
+                  >
+                    <svg
+                      class="w-3 h-3"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              {/each}
+
+              <!-- Add more tile -->
+              <label
+                for="photo"
+                class="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl aspect-square bg-slate-50 hover:border-[#1b2a4a] hover:bg-slate-100 cursor-pointer transition"
               >
-                Remove
-              </button>
-              <p
-                class="text-xs text-slate-400 px-3 py-2 bg-slate-50 border-t border-slate-200 truncate"
-              >
-                {photo?.name}
-              </p>
+                <svg
+                  class="w-5 h-5 text-slate-400"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+                <span class="text-xs text-slate-400 mt-1">Add more</span>
+              </label>
             </div>
+            <p class="text-xs text-slate-400">
+              {photos.length} photo{photos.length !== 1 ? "s" : ""} selected
+            </p>
           {:else}
+            <!-- Empty state upload area -->
             <label
               for="photo"
               class="flex flex-col items-center justify-center gap-2 w-full border-2 border-dashed border-slate-200 rounded-xl py-7 bg-slate-50 hover:border-[#1b2a4a] hover:bg-slate-100 cursor-pointer transition"
@@ -325,17 +380,21 @@
               <span class="text-sm font-medium text-[#1b2a4a]"
                 >Take photo or upload</span
               >
-              <span class="text-xs text-slate-400">Camera or camera roll</span>
-              <input
-                id="photo"
-                type="file"
-                accept="image/*"
-                capture="environment"
-                class="hidden"
-                on:change={handlePhotoChange}
-              />
+              <span class="text-xs text-slate-400"
+                >Camera or camera roll — select multiple</span
+              >
             </label>
           {/if}
+
+          <!-- Single hidden input used by both labels -->
+          <input
+            id="photo"
+            type="file"
+            accept="image/*"
+            multiple
+            class="hidden"
+            on:change={handlePhotoChange}
+          />
         </div>
 
         <!-- Incident Location -->
