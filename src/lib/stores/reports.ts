@@ -8,54 +8,64 @@ export type Report = {
 }
 
 export const reports = writable<Report[]>([
-  // --- Downtown Hamilton Core (concentrated) ---
-  { lat: 43.2571, lng: -79.8695, type: "encampment",  label: "Encampment" },
-  { lat: 43.2558, lng: -79.8712, type: "encampment",  label: "Encampment" },
-  { lat: 43.2545, lng: -79.8730, type: "suspicious",  label: "Suspicious Activity" },
-  { lat: 43.2560, lng: -79.8660, type: "drugs",       label: "Drug Activity" },
-  { lat: 43.2538, lng: -79.8695, type: "encampment",  label: "Encampment" },
-  { lat: 43.2590, lng: -79.8720, type: "suspicious",  label: "Suspicious Activity" },
-  { lat: 43.2575, lng: -79.8740, type: "drugs",       label: "Drug Activity" },
-  { lat: 43.2562, lng: -79.8678, type: "theft",       label: "Theft" },
-  { lat: 43.2548, lng: -79.8655, type: "vandalism",   label: "Vandalism" },
-  { lat: 43.2533, lng: -79.8710, type: "loitering",   label: "Loitering" },
-  { lat: 43.2580, lng: -79.8698, type: "noise",       label: "Noise Complaint" },
-  { lat: 43.2567, lng: -79.8722, type: "graffiti",    label: "Graffiti" },
-  { lat: 43.2554, lng: -79.8668, type: "suspicious",  label: "Suspicious Activity" },
-  { lat: 43.2541, lng: -79.8735, type: "theft",       label: "Theft" },
-  { lat: 43.2595, lng: -79.8645, type: "drugs",       label: "Drug Activity" },
-
-  // --- Stoney Creek ---
-  { lat: 43.2240, lng: -79.7580, type: "suspicious",  label: "Suspicious Activity" },
-  { lat: 43.2195, lng: -79.7620, type: "theft",       label: "Theft" },
-  { lat: 43.2268, lng: -79.7545, type: "vandalism",   label: "Vandalism" },
-  { lat: 43.2210, lng: -79.7490, type: "encampment",  label: "Encampment" },
-  { lat: 43.2252, lng: -79.7610, type: "drugs",       label: "Drug Activity" },
-  { lat: 43.2180, lng: -79.7555, type: "loitering",   label: "Loitering" },
-  { lat: 43.2275, lng: -79.7500, type: "suspicious",  label: "Suspicious Activity" },
-  { lat: 43.2230, lng: -79.7640, type: "noise",       label: "Noise Complaint" },
-  { lat: 43.2200, lng: -79.7520, type: "graffiti",    label: "Graffiti" },
-  { lat: 43.2260, lng: -79.7570, type: "theft",       label: "Theft" },
+  // --- West Hamilton / Westdale / Ainslie Wood ---
+  { lat: 43.2635, lng: -79.9150, type: "encampment",  label: "Encampment" },
+  { lat: 43.2582, lng: -79.9055, type: "suspicious",  label: "Suspicious Activity" },
+  { lat: 43.2550, lng: -79.9200, type: "theft",       label: "Theft" },
 
   // --- Dundas ---
-  { lat: 43.2668, lng: -79.9590, type: "suspicious",  label: "Suspicious Activity" },
-  { lat: 43.2642, lng: -79.9620, type: "encampment",  label: "Encampment" },
-  { lat: 43.2695, lng: -79.9555, type: "drugs",       label: "Drug Activity" },
-  { lat: 43.2655, lng: -79.9640, type: "vandalism",   label: "Vandalism" },
-  { lat: 43.2680, lng: -79.9510, type: "theft",       label: "Theft" },
-  { lat: 43.2630, lng: -79.9580, type: "loitering",   label: "Loitering" },
-  { lat: 43.2710, lng: -79.9600, type: "suspicious",  label: "Suspicious Activity" },
-  { lat: 43.2648, lng: -79.9530, type: "noise",       label: "Noise Complaint" },
+  { lat: 43.2660, lng: -79.9505, type: "drugs",       label: "Drug Activity" },
+  { lat: 43.2730, lng: -79.9700, type: "vandalism",   label: "Vandalism" },
+  { lat: 43.2605, lng: -79.9400, type: "noise",       label: "Noise Complaint" },
 
-  // --- Hannon ---
-  { lat: 43.1980, lng: -79.8120, type: "suspicious",  label: "Suspicious Activity" },
-  { lat: 43.2010, lng: -79.8085, type: "theft",       label: "Theft" },
-  { lat: 43.1955, lng: -79.8150, type: "vandalism",   label: "Vandalism" },
-  { lat: 43.2035, lng: -79.8060, type: "encampment",  label: "Encampment" },
-  { lat: 43.1970, lng: -79.8100, type: "drugs",       label: "Drug Activity" },
-  { lat: 43.2020, lng: -79.8140, type: "loitering",   label: "Loitering" },
-  { lat: 43.1990, lng: -79.8070, type: "graffiti",    label: "Graffiti" },
+  // --- Ancaster ---
+  { lat: 43.2185, lng: -79.9870, type: "suspicious",  label: "Suspicious Activity" },
+  { lat: 43.2040, lng: -79.9850, type: "theft",       label: "Theft" },
+  { lat: 43.2290, lng: -80.0000, type: "loitering",   label: "Loitering" },
+
+  // --- Mount Hope ---
+  { lat: 43.1600, lng: -79.9100, type: "encampment",  label: "Encampment" },
+  { lat: 43.1505, lng: -79.9050, type: "drugs",       label: "Drug Activity" },
+
+  // --- Binbrook ---
+  { lat: 43.1250, lng: -79.8100, type: "suspicious",  label: "Suspicious Activity" },
+  { lat: 43.1350, lng: -79.7950, type: "graffiti",    label: "Graffiti" },
+  { lat: 43.1180, lng: -79.8250, type: "theft",       label: "Theft" },
+
+  // --- Stoney Creek (Upper) ---
+  { lat: 43.2160, lng: -79.7200, type: "vandalism",   label: "Vandalism" },
+  { lat: 43.2300, lng: -79.7050, type: "suspicious",  label: "Suspicious Activity" },
+
+  // --- Winona ---
+  { lat: 43.2000, lng: -79.6600, type: "noise",       label: "Noise Complaint" },
+  { lat: 43.2105, lng: -79.6750, type: "loitering",   label: "Loitering" },
+
+  // --- Fruitland / Rural East Hamilton ---
+  { lat: 43.1850, lng: -79.6300, type: "encampment",  label: "Encampment" },
+
+  // --- Waterdown ---
+  { lat: 43.3340, lng: -79.8950, type: "suspicious",  label: "Suspicious Activity" },
+  { lat: 43.3450, lng: -79.8800, type: "drugs",       label: "Drug Activity" },
+  { lat: 43.3200, lng: -79.9100, type: "theft",       label: "Theft" },
+
+  // --- Carlisle ---
+  { lat: 43.3980, lng: -79.9800, type: "vandalism",   label: "Vandalism" },
+
+  // --- Greensville ---
+  { lat: 43.2860, lng: -79.9950, type: "graffiti",    label: "Graffiti" },
+
+  // --- Flamborough Rural ---
+  { lat: 43.3600, lng: -80.0500, type: "loitering",   label: "Loitering" },
+
+  // --- East End / Industrial Sector ---
+  { lat: 43.2480, lng: -79.8200, type: "drugs",       label: "Drug Activity" },
+  { lat: 43.2400, lng: -79.8000, type: "suspicious",  label: "Suspicious Activity" },
+
+  // --- Central Mountain ---
+  { lat: 43.2300, lng: -79.8800, type: "encampment",  label: "Encampment" },
+  { lat: 43.2250, lng: -79.8700, type: "theft",       label: "Theft" },
 ])
+
 
 export const encampments       = derived(reports, ($r) => $r.filter(r => r.type === "encampment"))
 export const suspiciousReports = derived(reports, ($r) => $r.filter(r => r.type === "suspicious"))

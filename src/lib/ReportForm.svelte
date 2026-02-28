@@ -3,17 +3,24 @@
   import { browser } from "$app/environment"
   import { userLocation } from "$lib/stores/location"
 
-  console.log($userLocation)
-
   let name = ""
   let email = ""
   let phone = ""
   let type = ""
   let date = ""
+  let time = ""
   let description = ""
   let photo = null
   let photoPreview = null
   let submitted = false
+
+  const params = new URLSearchParams(window.location.search)
+  type = params.get("crime") ?? ""
+
+  // Auto-populate current date and time
+  const now = new Date()
+  date = now.toISOString().split("T")[0]
+  time = now.toTimeString().slice(0, 5)
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0]
@@ -33,7 +40,16 @@
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const formData = { name, email, phone, type, date, description, photo }
+    const formData = {
+      name,
+      email,
+      phone,
+      type,
+      date,
+      time,
+      description,
+      photo,
+    }
     console.log("Crime report submitted:", formData)
     submitted = true
     setTimeout(() => {
@@ -43,6 +59,7 @@
       phone = ""
       type = ""
       date = ""
+      time = ""
       description = ""
       photo = null
       photoPreview = null
@@ -80,12 +97,11 @@
   })
 </script>
 
-<!-- Outer page bg matches the light map feel of Eyes Out -->
 <div
   class="min-h-screen bg-slate-100 flex items-start justify-center py-8 px-4"
 >
   <div class="w-full max-w-md">
-    <!-- Header — navy bar matching the app's branding -->
+    <!-- Header -->
     <div
       class="bg-[#1b2a4a] rounded-2xl px-6 py-5 mb-4 flex items-center gap-4 shadow-lg"
     >
@@ -119,7 +135,7 @@
       </div>
     </div>
 
-    <!-- Form card — white rounded card like the app's bottom sheet / nav -->
+    <!-- Form card -->
     <div class="bg-white rounded-2xl shadow-md overflow-hidden">
       <form on:submit={handleSubmit} class="divide-y divide-slate-100">
         <!-- Reporter Info -->
@@ -186,29 +202,29 @@
             Incident Details
           </p>
 
+          <div>
+            <label
+              for="type"
+              class="block text-sm font-medium text-slate-600 mb-1">Type</label
+            >
+            <select
+              id="type"
+              bind:value={type}
+              required
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1b2a4a]/30 focus:border-[#1b2a4a] transition appearance-none"
+            >
+              <option value="">Select...</option>
+              <option value="encampment">Encampment</option>
+              <option value="drug_activity">Drug Activity</option>
+              <option value="suspicious">Suspicious</option>
+              <option value="theft">Theft</option>
+              <option value="assault">Assault</option>
+              <option value="vandalism">Vandalism</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
           <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label
-                for="type"
-                class="block text-sm font-medium text-slate-600 mb-1"
-                >Type</label
-              >
-              <select
-                id="type"
-                bind:value={type}
-                required
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1b2a4a]/30 focus:border-[#1b2a4a] transition appearance-none"
-              >
-                <option value="">Select...</option>
-                <option value="encampment">Encampment</option>
-                <option value="drug_activity">Drug Activity</option>
-                <option value="suspicious">Suspicious</option>
-                <option value="theft">Theft</option>
-                <option value="assault">Assault</option>
-                <option value="vandalism">Vandalism</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
             <div>
               <label
                 for="date"
@@ -219,6 +235,20 @@
                 id="date"
                 bind:value={date}
                 type="date"
+                required
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1b2a4a]/30 focus:border-[#1b2a4a] transition"
+              />
+            </div>
+            <div>
+              <label
+                for="time"
+                class="block text-sm font-medium text-slate-600 mb-1"
+                >Time</label
+              >
+              <input
+                id="time"
+                bind:value={time}
+                type="time"
                 required
                 class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1b2a4a]/30 focus:border-[#1b2a4a] transition"
               />
@@ -364,6 +394,7 @@
               >
                 Submit Report
               </button>
+
               <a
                 href="/"
                 class="text-center w-full bg-red-600 active:scale-[0.99] text-white font-semibold text-sm py-3 rounded-xl transition shadow-sm"

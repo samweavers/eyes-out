@@ -6,28 +6,28 @@
   const links = [
     {
       label: "Encampment",
-      href: "/#encampment",
+      href: "/report?crime=encampment",
       icon: Tent,
       color: reportColors.encampment,
       type: "encampment",
     },
     {
       label: "Drug Activity",
-      href: "/#drug-activity",
+      href: "/report?crime=drug-activity",
       icon: Pill,
       color: reportColors.drugs,
       type: "drugs",
     },
     {
       label: "Suspicious",
-      href: "/#suspicious",
+      href: "/report?crime=suspicious",
       icon: ShieldAlert,
       color: reportColors.suspicious,
       type: "suspicious",
     },
     {
       label: "All Reports",
-      href: "/#all-reports",
+      href: "/report?crime=all-reports",
       icon: TriangleAlert,
       color: reportColors.other,
       type: "all",

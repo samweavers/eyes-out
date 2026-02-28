@@ -94,7 +94,7 @@
   }
 
   .logo {
-    width: 260px;
+    width: 200px;
     object-fit: contain;
     pointer-events: auto;
     /* soft drop shadow to lift it off the map */
