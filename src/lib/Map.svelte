@@ -141,6 +141,11 @@
     </div>
   {/if}
 
+  <a href="/alert" class="bg-cyan-900 shadow-lg absolute  right-0 bottom-[25%] z-[2]  flex items-center rounded-l-lg gap-1 text-sm font-bold text-white p-2">
+    <TriangleAlert class="text-yellow-500" size={20} />
+    1 ACTIVE WARNING
+  </a>
+
   <div bind:this={mapContainer} class="map"></div>
 </div>
 

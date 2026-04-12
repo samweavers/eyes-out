@@ -229,8 +229,9 @@
               bind:value={type}
               bind:this={typeSelect}
               required
-              class="w-full bg-slate-50 border rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1b2a4a]/30 focus:border-[#1b2a4a] transition appearance-none {type ===
-              'other'
+              class="w-full bg-slate-50 border-2 rounded-xl px-4 py-2.5 text-sm text-slate-800
+         focus:outline-none focus:ring-4 focus:ring-blue-400/60 focus:border-blue-400 focus:bg-white
+         transition appearance-none {type === 'other'
                 ? 'border-[#1b2a4a] ring-2 ring-[#1b2a4a]/30 animate-pulse'
                 : 'border-slate-200'}"
             >

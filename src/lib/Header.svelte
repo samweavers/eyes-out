@@ -16,6 +16,11 @@
 </script>
 
 <header>
+<div class="bg-red-700 p-2">
+  <p class="text-white text-center text-xs">
+    This tool is not for emergencies. If you are in immediate danger or facing serious bodily harm, call 911.
+  </p>
+</div>
   <div class="header-inner">
     <!-- Logo -->
     <img src="/images/eyes-out-logo.png" alt="Eyes Out" class="logo" />
