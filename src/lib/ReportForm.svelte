@@ -455,12 +455,14 @@
                 Submit Report
               </button>
 
-              <a
-                href="/"
-                class="text-center w-full bg-red-600 active:scale-[0.99] text-white font-semibold text-sm py-3 rounded-xl transition shadow-sm"
-              >
-                Abandon Report
-              </a>
+<button
+  type="button"
+  on:click={() => history.back()}
+  class="text-center w-full bg-red-600 active:scale-[0.99] text-white font-semibold text-sm py-3 rounded-xl transition shadow-sm"
+>
+  Abandon Report
+</button>
+
             </div>
           {/if}
         </div>
