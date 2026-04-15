@@ -14,9 +14,6 @@ export const crimes = [
     { label: "Public Intoxication", value: "intoxication" },
     { label: "Illegal Dumping", value: "dumping" },
     { label: "Harassment", value: "harassment" },
-    { label: "Assault", value: "assault" },
     { label: "Burglary", value: "burglary" },
-    { label: "Armed Robbery", value: "armed-robbery" },
-    { label: "Hit and Run", value: "hit-and-run" },
     { label: "Other", value: "other" },
       ]

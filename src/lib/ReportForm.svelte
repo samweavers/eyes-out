@@ -148,7 +148,7 @@
         </svg>
       </div>
       <h1 class="text-white text-xl font-bold leading-tight">
-        Report an Incident
+        Report: {type}
       </h1>
     </div>
 

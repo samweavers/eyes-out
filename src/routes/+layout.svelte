@@ -5,6 +5,6 @@
   import Footer from "$lib/Footer.svelte"
 </script>
 
-<main>
+<main class="flex flex-col">
   <slot />
 </main>

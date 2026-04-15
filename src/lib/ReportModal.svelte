@@ -1,16 +1,11 @@
-<script lang="ts">
-  import { Mail } from "lucide-svelte"
+<script>
   import { onMount } from "svelte";
   import { fade, scale } from "svelte/transition";
 
   let show = false;
 
-  function showModal() {
-    show = true
-  }
-
   onMount(() => {
-    if (window.location.pathname === "/admin" && !show) {
+    if (window.location.pathname === "/admin") {
       setTimeout(() => {
         show = true;
       }, 3000); // delay (ms)
@@ -22,26 +17,9 @@
   }
 </script>
 
-<header class="bg-cyan-900 py-2 px-4 flex justify-between w-full items-center">
-  <div class="flex gap-2 items-center">
-    <img
-      class="w-8"
-      src="https://hamiltonpolice.on.ca/sites/all/themes/hps/logo.svg"
-      alt=""
-    />
-    <div class="flex flex-col">
-      <p class="font-bold text-white text-sm">CRIME MONITOR</p>
-      <p class="text-white text-xs">Hamilton Police</p>
-    </div>
-  </div>
-  <button on:click={showModal} class="mail-icon relative">
-    <Mail size="25" class="text-white" />
-  </button>
-</header>
-
 {#if show}
   <div
-    class="fixed inset-0 flex items-center justify-center z-[1000] bg-black/50 backdrop-blur p-8"
+    class="fixed inset-0 flex items-center justify-center z-[1000] bg-black/50 backdrop-blur"
     in:fade={{ duration: 200 }}
     out:fade={{ duration: 200 }}
   >
@@ -80,20 +58,11 @@
 
         <a
           class="bg-cyan-800 shadow text-sm text-white font-bold px-4 py-1 w-full text-center rounded-full"
-          href="/report"
+          href="/"
         >
-          REPORT TO MAP
+          MAP TO REPORT
         </a>
       </div>
     </div>
   </div>
 {/if}
-
-<style lang="scss">
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 40;
-    pointer-events: all;
-  }
-</style>

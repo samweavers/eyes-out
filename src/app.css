@@ -416,5 +416,12 @@ input {
   }
 
   .mail-icon:after {
-    @apply content-["6"] bg-red-500 text-white text-xs absolute -top-1 -right-1 rounded-full w-4 h-4 font-bold text-center flex items-center justify-center;
+    @apply content-["1"] bg-red-500 text-white text-xs absolute -top-1 -right-1 rounded-full w-4 h-4 font-bold text-center flex items-center justify-center;
+  }
+
+  ul {
+    @apply px-3;
+    li {
+    @apply list-disc;
+  }
   }
