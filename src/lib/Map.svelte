@@ -12,13 +12,16 @@
   let map
   let L
 
+
+  export let admin = true
+
   let error = null
 
   let youMarker = null
   let placeMarker = null
 
   // ✅ Reactive route check
-  $: isAdmin = $page.url.pathname === "/admin"
+  $: isAdmin = browser && $page.url.pathname === "/admin"
 
   function removeMarker() {
     if (placeMarker) map.removeLayer(placeMarker)
@@ -116,6 +119,41 @@
         .addTo(map)
     })
 
+    // 🔥 Admin Heatmap Layer
+if (get(page).url.pathname === "/admin") {
+  $reports.forEach((report) => {
+    let color = "#facc15" // yellow (moderate)
+    let radius = 800
+
+    if (report.severity === "high") {
+      color = "#d97706" // amber-600
+      radius = 1100
+    }
+
+    if (report.severity === "very-high") {
+      color = "#b91c1c" // red-700
+      radius = 1400
+    }
+
+    // Main glow
+    L.circle([report.lat, report.lng], {
+      radius,
+      color: null,
+      fillColor: color,
+      fillOpacity: 0.25,
+    }).addTo(map)
+
+    // Inner intensity layer
+    L.circle([report.lat, report.lng], {
+      radius: radius * 0.6,
+      color: null,
+      fillColor: color,
+      fillOpacity: 0.35,
+    }).addTo(map)
+  })
+}
+
+
     // ✅ Click handler (disabled on admin ONLY)
     map.on("click", (e) => {
       if (get(page).url.pathname === "/admin") return
@@ -155,6 +193,8 @@
 
   <div bind:this={mapContainer} class="map"></div>
 </div>
+
+
 
 <style>
   .map {

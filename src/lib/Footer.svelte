@@ -77,13 +77,35 @@
     </div>
   </footer>
   {:else}
-  <footer class="fixed bottom-0 left-0 right-0 z-[45] p-1 pb-10">
+  <footer class="fixed bottom-0 flex flex-col gap-1 left-0 right-0 z-[45] p-1 pb-10">
+    <div class="w-full bg-white p-2 flex justify-center gap-3 rounded-md shadow-md">
+      <p class="text-xs flex items-center gap-1">
+        <span class="block w-3 h-3 rounded-full bg-yellow-500" /> 
+        Moderate Reports
+      </p>
+      <p class="text-xs flex items-center gap-1">
+        <span class="block w-3 h-3 rounded-full bg-amber-600" /> 
+        High Reports
+      </p>
+      <p class="text-xs flex items-center gap-1">
+        <span class="block w-3 h-3 rounded-full bg-red-700" /> 
+        Very High Reports
+      </p>
+    </div>
+    <div class="w-full bg-gray-900 p-2 flex flex-col gap-1 rounded-md shadow-md">
+      <p class="text-xs text-white"><span class="text-yellow-500">Increase drug activity reports</span> over the last 24hrs</p>
+    </div>
     <div class="flex gap-1">
       <div class="flex flex-col gap-1 ">
         <div class="w-full bg-white p-2 flex flex-col gap-1 rounded-md shadow-md">
           <p class="footer-heading"><strong class="text-sm">62 REPORTS</strong>IN DIVISION 1</p>
           <hr>
-          <p class="text-xs flex w-full justify-between">Drug Activity<span class="text-green-600 font-semibold">+15%</span></p>
+          <div class="flex w-full justify-between">
+            <p class="text-xs flex items-center gap-1">
+              <Pill size=10 />
+              Drug Activity
+            </p>
+            <span class="text-xs text-green-600 font-semibold">+15%</span></div>
           <hr>
           <p class="text-xs font-bold">Possible Causes:</p>
           <ul>
